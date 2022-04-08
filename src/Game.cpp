@@ -1,6 +1,8 @@
 #include "Game.h"
 #include <iostream>
 
+Game* Game::s_Instance = nullptr;
+
 bool Game::init(const char* title,int width,int height,bool fullscreen){
     int r = SDL_Init(SDL_INIT_EVERYTHING);
     if(r<0)return false;
@@ -22,15 +24,9 @@ bool Game::init(const char* title,int width,int height,bool fullscreen){
 
     m_Running = true;
 
-    obj = new GameObject();
-    player = new Player();
-    enemy = new Enemy();
+    player = new Player(new LoaderParams(300,300,120,80,"knight-run"));
+    enemy = new Enemy(new LoaderParams(0,0,128,82,"animate"));
 
-    obj->load(100,100,128,82,"animate");
-    player->load(300,300,120,80,"knight-run");
-    enemy->load(0,0,128,82,"animate");
-
-    m_GameObjects.push_back(obj);
     m_GameObjects.push_back(player);
     m_GameObjects.push_back(enemy);
 
@@ -43,7 +39,7 @@ void Game::render(){
     //draw someting
     for (auto const o : m_GameObjects)
     {
-        o->draw(m_Renderer);
+        o->draw();
     }
     
 
@@ -59,6 +55,11 @@ void Game::update(){
 }
 
 void Game::clean(){
+    for (auto const o : m_GameObjects)
+    {
+        o->draw();
+    }
+    
     SDL_DestroyRenderer(m_Renderer);
     SDL_DestroyWindow(m_Window);
     SDL_Quit();

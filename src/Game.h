@@ -19,13 +19,15 @@ private:
 
     int m_CurrentFrame = 1;
 
-    GameObject* obj;
     GameObject* player;
     GameObject* enemy;
 
     std::vector<GameObject*> m_GameObjects;
-public:
+
     Game(){};
+    static Game* s_Instance;
+public:
+    
     ~Game(){};
 
     bool init(const char* title,int width,int height,bool fullscreen);
@@ -39,4 +41,14 @@ public:
     void clean();
 
     bool running() const {return m_Running;}
+
+    static Game* Instance(){
+        if(s_Instance==nullptr){
+            s_Instance = new Game();
+        }
+
+        return s_Instance;
+    }
+
+    SDL_Renderer* getRenderer() const {return m_Renderer;}
 };

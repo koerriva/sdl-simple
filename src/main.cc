@@ -5,21 +5,21 @@
 
 int main(int argc,char** argv){
     std::cout << "hello sdl2" << std::endl;
-    Game* game = new Game();
-    bool r = game->init("NodeEditor",1280,720,0);
+
+    bool r = Game::Instance()->init("wx",1280,720,0);
 
     if(r){
         std::cout << "Enjoy!" << std::endl;
     }
 
-    while(game->running()){
-        game->handleEnvets();
-        game->update();
-        game->render();
+    while(Game::Instance()->running()){
+        Game::Instance()->handleEnvets();
+        Game::Instance()->update();
+        Game::Instance()->render();
 
-        SDL_Delay((1/60.0f)*1000);
+        SDL_Delay(10);
     }
 
-    game->clean();
+    Game::Instance()->clean();
     return 0;
 }
