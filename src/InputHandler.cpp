@@ -40,105 +40,45 @@ void InputHandler::initialiseJoysticks(){
     }else{
         std::cerr << "Joystick not found!" << std::endl;
     }
+
+    m_keyStates = SDL_GetKeyboardState(0);
 }
 
 void InputHandler::update(){
-    m_keyStates = SDL_GetKeyboardState(0);
     SDL_Event event;
     while(SDL_PollEvent(&event)){
-        if(event.type == SDL_QUIT){
+        switch (event.type)
+        {
+        case SDL_QUIT:
             Game::Instance()->quit();
-        }
+            break;
+        case SDL_JOYAXISMOTION:
+            onJoystickAxisMove(event);
+            break;
+        case SDL_JOYBUTTONDOWN:
+            onJoystickButtonDown(event);
+            break;
+        case SDL_JOYBUTTONUP:
+            onJoystickButtonUp(event);
+            break;
+        case SDL_MOUSEMOTION:
+            onMouseMove(event);
+            break;
+        case SDL_MOUSEBUTTONDOWN:
+            onMouseButtonDown(event);
+            break;
+        case SDL_MOUSEBUTTONUP:
+            onMouseButtonUp(event);
+            break;
+        case SDL_KEYDOWN:
+            onKeyDown(event);
+            break;
+        case SDL_KEYUP:
+            onKeyUp(event);
+            break;
 
-        if(event.type == SDL_JOYAXISMOTION){
-            int witchOne = event.jaxis.which;
-
-            //left stick move left or right
-            if(event.jaxis.axis == 0){
-                if(event.jaxis.value>m_joystickDeadZone){
-                    m_joystickValues[witchOne].first.x = 1;
-                }else if(event.jaxis.value<-m_joystickDeadZone){
-                    m_joystickValues[witchOne].first.x = -1;
-                }else{
-                    m_joystickValues[witchOne].first.x = 0;
-                }
-            }
-
-            //left stick move up or down
-            if(event.jaxis.axis == 1){
-                if(event.jaxis.value>m_joystickDeadZone){
-                    m_joystickValues[witchOne].first.y = 1;
-                }else if(event.jaxis.value<-m_joystickDeadZone){
-                    m_joystickValues[witchOne].first.y = -1;
-                }else{
-                    m_joystickValues[witchOne].first.y = 0;
-                }
-            }
-
-            //right stick move left or right
-            if(event.jaxis.axis == 3){
-                if(event.jaxis.value>m_joystickDeadZone){
-                    m_joystickValues[witchOne].second.x = 1;
-                }else if(event.jaxis.value<-m_joystickDeadZone){
-                    m_joystickValues[witchOne].second.x = -1;
-                }else{
-                    m_joystickValues[witchOne].second.x = 0;
-                }
-            }
-
-            //right stick move up or down
-            if(event.jaxis.axis == 4){
-                if(event.jaxis.value>m_joystickDeadZone){
-                    m_joystickValues[witchOne].second.y = 1;
-                }else if(event.jaxis.value<-m_joystickDeadZone){
-                    m_joystickValues[witchOne].second.y = -1;
-                }else{
-                    m_joystickValues[witchOne].second.y = 0;
-                }
-            }
-        }
-
-        if(event.type==SDL_JOYBUTTONDOWN){
-            int joy = event.jaxis.which;
-            m_buttonStates[joy][event.jbutton.button] = true;
-        }
-
-        if(event.type==SDL_JOYBUTTONUP){
-            int joy = event.jaxis.which;
-            m_buttonStates[joy][event.jbutton.button] = false;
-        }
-
-        if(event.type==SDL_MOUSEBUTTONDOWN){
-            if(event.button.button==SDL_BUTTON_LEFT){
-                m_mouseButtonStates[LEFT] = true;
-            }
-
-            if(event.button.button==SDL_BUTTON_MIDDLE){
-                m_mouseButtonStates[MIDDLE] = true;
-            }
-
-            if(event.button.button==SDL_BUTTON_RIGHT){
-                m_mouseButtonStates[RIGHT] = true;
-            }
-        }
-
-        if(event.type==SDL_MOUSEBUTTONUP){
-            if(event.button.button==SDL_BUTTON_LEFT){
-                m_mouseButtonStates[LEFT] = false;
-            }
-
-            if(event.button.button==SDL_BUTTON_MIDDLE){
-                m_mouseButtonStates[MIDDLE] = false;
-            }
-
-            if(event.button.button==SDL_BUTTON_RIGHT){
-                m_mouseButtonStates[RIGHT] = false;
-            }
-        }
-
-        if(event.type==SDL_MOUSEMOTION){
-            m_mousePosition.x = event.motion.x;
-            m_mousePosition.y = event.motion.y;
+        default:
+            break;
         }
     }
 }
@@ -180,4 +120,103 @@ bool InputHandler::isKeyDown(SDL_Scancode key){
         return m_keyStates[key]==1;
     }
     return false;
+}
+
+void InputHandler::onKeyDown(SDL_Event& event){
+    //TODO
+}
+
+void InputHandler::onKeyUp(SDL_Event& event){
+    //TODO
+}
+
+void InputHandler::onMouseMove(SDL_Event& event){
+    m_mousePosition.x = event.motion.x;
+    m_mousePosition.y = event.motion.y;
+}
+
+void InputHandler::onMouseButtonDown(SDL_Event& event){
+    if(event.button.button==SDL_BUTTON_LEFT){
+        m_mouseButtonStates[LEFT] = true;
+    }
+
+    if(event.button.button==SDL_BUTTON_MIDDLE){
+        m_mouseButtonStates[MIDDLE] = true;
+    }
+
+    if(event.button.button==SDL_BUTTON_RIGHT){
+        m_mouseButtonStates[RIGHT] = true;
+    }
+}
+
+void InputHandler::onMouseButtonUp(SDL_Event& event){
+    if(event.button.button==SDL_BUTTON_LEFT){
+        m_mouseButtonStates[LEFT] = false;
+    }
+
+    if(event.button.button==SDL_BUTTON_MIDDLE){
+        m_mouseButtonStates[MIDDLE] = false;
+    }
+
+    if(event.button.button==SDL_BUTTON_RIGHT){
+        m_mouseButtonStates[RIGHT] = false;
+    }
+}
+
+void InputHandler::onJoystickAxisMove(SDL_Event& event){
+    int witchOne = event.jaxis.which;
+
+    //left stick move left or right
+    if(event.jaxis.axis == 0){
+        if(event.jaxis.value>m_joystickDeadZone){
+            m_joystickValues[witchOne].first.x = 1;
+        }else if(event.jaxis.value<-m_joystickDeadZone){
+            m_joystickValues[witchOne].first.x = -1;
+        }else{
+            m_joystickValues[witchOne].first.x = 0;
+        }
+    }
+
+    //left stick move up or down
+    if(event.jaxis.axis == 1){
+        if(event.jaxis.value>m_joystickDeadZone){
+            m_joystickValues[witchOne].first.y = 1;
+        }else if(event.jaxis.value<-m_joystickDeadZone){
+            m_joystickValues[witchOne].first.y = -1;
+        }else{
+            m_joystickValues[witchOne].first.y = 0;
+        }
+    }
+
+    //right stick move left or right
+    if(event.jaxis.axis == 3){
+        if(event.jaxis.value>m_joystickDeadZone){
+            m_joystickValues[witchOne].second.x = 1;
+        }else if(event.jaxis.value<-m_joystickDeadZone){
+            m_joystickValues[witchOne].second.x = -1;
+        }else{
+            m_joystickValues[witchOne].second.x = 0;
+        }
+    }
+
+    //right stick move up or down
+    if(event.jaxis.axis == 4){
+        if(event.jaxis.value>m_joystickDeadZone){
+            m_joystickValues[witchOne].second.y = 1;
+        }else if(event.jaxis.value<-m_joystickDeadZone){
+            m_joystickValues[witchOne].second.y = -1;
+        }else{
+            m_joystickValues[witchOne].second.y = 0;
+        }
+    }
+}
+
+void InputHandler::onJoystickButtonDown(SDL_Event& event){
+    int joy = event.jaxis.which;
+    m_buttonStates[joy][event.jbutton.button] = true;
+}
+
+void InputHandler::onJoystickButtonUp(SDL_Event& event){
+    int joy = event.jaxis.which;
+    m_buttonStates[joy][event.jbutton.button] = false;
 }

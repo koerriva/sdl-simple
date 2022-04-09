@@ -30,6 +30,20 @@ private:
 
     ivec2 m_mousePosition;
     const Uint8* m_keyStates;
+
+    //keybord
+    void onKeyDown(SDL_Event& event);
+    void onKeyUp(SDL_Event& event);
+
+    //mouse
+    void onMouseMove(SDL_Event& event);
+    void onMouseButtonDown(SDL_Event& event);
+    void onMouseButtonUp(SDL_Event& event);
+
+    //joystick
+    void onJoystickAxisMove(SDL_Event& event);
+    void onJoystickButtonDown(SDL_Event& event);
+    void onJoystickButtonUp(SDL_Event& event);
 public:
     static InputHandler* Instance(){
         if(s_Instance==nullptr){
