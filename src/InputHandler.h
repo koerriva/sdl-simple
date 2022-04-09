@@ -2,17 +2,34 @@
 
 #include <vector>
 #include <SDL2/SDL.h>
+#include <glm/glm.hpp>
+
+using namespace glm;
+
+enum mouse_button {
+    LEFT=0,
+    MIDDLE=1,
+    RIGHT=2
+};
 
 class InputHandler
 {
 private:
     static InputHandler* s_Instance;
 
-    InputHandler(){};
+    InputHandler();
     ~InputHandler(){};
 
     std::vector<SDL_Joystick*> m_joysticks;
     bool m_joysticksInitialised = false;
+    std::vector<std::pair<vec2,vec2>> m_joystickValues;
+    const int m_joystickDeadZone = 10000;
+    std::vector<std::vector<bool>> m_buttonStates;
+
+    std::vector<bool> m_mouseButtonStates;
+
+    ivec2 m_mousePosition;
+    const Uint8* m_keyStates;
 public:
     static InputHandler* Instance(){
         if(s_Instance==nullptr){
@@ -28,4 +45,14 @@ public:
     bool joysticksInitialised() const {
         return m_joysticksInitialised;
     };
+
+    vec2 axis(int joy,int stick);
+
+    bool getButtonState(int joy,int buttonNumber);
+
+    bool getMouseButtonState(int buttonNumber);
+
+    ivec2 getMousePosition();
+
+    bool isKeyDown(SDL_Scancode key);
 };
