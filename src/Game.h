@@ -42,6 +42,8 @@ public:
 
     bool running() const {return m_Running;}
 
+    void quit();
+
     static Game* Instance(){
         if(s_Instance==nullptr){
             s_Instance = new Game();

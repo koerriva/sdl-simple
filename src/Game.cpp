@@ -1,5 +1,6 @@
-#include "Game.h"
 #include <iostream>
+#include "Game.h"
+#include "InputHandler.h"
 
 Game* Game::s_Instance = nullptr;
 
@@ -18,11 +19,11 @@ bool Game::init(const char* title,int width,int height,bool fullscreen){
     m_Renderer = SDL_CreateRenderer(m_Window,-1,0);
     SDL_SetRenderDrawColor(m_Renderer,120,40,30,200);
 
+    InputHandler::Instance()->initialiseJoysticks();
+
     TextureManager::Instance()->load("data/animate-alpha.png","animate",m_Renderer);
     TextureManager::Instance()->load("data/Knight_Idle.png","knight-idle",m_Renderer);
     TextureManager::Instance()->load("data/Knight_Run.png","knight-run",m_Renderer);
-
-    m_Running = true;
 
     player = new Player(new LoaderParams(300,300,120,80,"knight-run"));
     enemy = new Enemy(new LoaderParams(0,0,128,82,"animate"));
@@ -30,6 +31,7 @@ bool Game::init(const char* title,int width,int height,bool fullscreen){
     m_GameObjects.push_back(player);
     m_GameObjects.push_back(enemy);
 
+    m_Running = true;
     return true;
 }
 
@@ -51,7 +53,6 @@ void Game::update(){
     {
         o->update();
     }
-    
 }
 
 void Game::clean(){
@@ -59,23 +60,17 @@ void Game::clean(){
     {
         o->draw();
     }
-    
+    InputHandler::Instance()->clean();
+}
+
+void Game::quit(){
     SDL_DestroyRenderer(m_Renderer);
     SDL_DestroyWindow(m_Window);
     SDL_Quit();
+
+    m_Running = false;
 }
 
 void Game::handleEnvets(){
-    SDL_Event event;
-    if(SDL_PollEvent(&event)){
-        switch (event.type)
-        {
-        case SDL_QUIT:
-            m_Running = false;
-            break;
-        
-        default:
-            break;
-        }
-    }
+    InputHandler::Instance()->update();
 }
