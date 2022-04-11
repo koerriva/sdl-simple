@@ -1,6 +1,8 @@
 #include <iostream>
 #include "Game.h"
 #include "InputHandler.h"
+#include "MenuState.h"
+#include "PlayState.h"
 
 Game* Game::s_Instance = nullptr;
 
@@ -31,6 +33,9 @@ bool Game::init(const char* title,int width,int height,bool fullscreen){
     m_GameObjects.push_back(player);
     m_GameObjects.push_back(enemy);
 
+    m_GameStateMachine = new GameStateMachine();
+    m_GameStateMachine->changeState(new MenuState());
+
     m_Running = true;
     return true;
 }
@@ -44,7 +49,6 @@ void Game::render(){
         o->draw();
     }
     
-
     SDL_RenderPresent(m_Renderer);
 }
 
@@ -72,5 +76,10 @@ void Game::quit(){
 }
 
 void Game::handleEnvets(){
-    InputHandler::Instance()->update();
+    auto ih = InputHandler::Instance();
+    ih->update();
+
+    if(ih->isKeyDown(SDL_SCANCODE_RETURN)){
+        m_GameStateMachine->changeState(new PlayState());
+    }
 }

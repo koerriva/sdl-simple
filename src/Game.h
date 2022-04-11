@@ -7,6 +7,8 @@
 #include "GameObject.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "GameStateMachine.h"
+
 #include <vector>
 
 class Game
@@ -26,6 +28,8 @@ private:
 
     Game(){};
     static Game* s_Instance;
+
+    GameStateMachine* m_GameStateMachine;
 public:
     
     ~Game(){};
