@@ -24,8 +24,6 @@ private:
     GameObject* player;
     GameObject* enemy;
 
-    std::vector<GameObject*> m_GameObjects;
-
     Game(){};
     static Game* s_Instance;
 

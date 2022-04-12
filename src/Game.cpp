@@ -30,9 +30,6 @@ bool Game::init(const char* title,int width,int height,bool fullscreen){
     player = new Player(new LoaderParams(300,300,120,80,"knight-run"));
     enemy = new Enemy(new LoaderParams(0,0,128,82,"animate"));
 
-    m_GameObjects.push_back(player);
-    m_GameObjects.push_back(enemy);
-
     m_GameStateMachine = new GameStateMachine();
     m_GameStateMachine->changeState(new MenuState());
 
@@ -43,27 +40,16 @@ bool Game::init(const char* title,int width,int height,bool fullscreen){
 void Game::render(){
     SDL_RenderClear(m_Renderer);
 
-    //draw someting
-    for (auto const o : m_GameObjects)
-    {
-        o->draw();
-    }
+    m_GameStateMachine->render();
     
     SDL_RenderPresent(m_Renderer);
 }
 
 void Game::update(){
-    for (auto const o : m_GameObjects)
-    {
-        o->update();
-    }
+    m_GameStateMachine->update();
 }
 
 void Game::clean(){
-    for (auto const o : m_GameObjects)
-    {
-        o->draw();
-    }
     InputHandler::Instance()->clean();
 }
 
