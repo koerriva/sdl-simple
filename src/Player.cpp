@@ -1,12 +1,22 @@
 #include "Player.h"
 #include "InputHandler.h"
+#include "TextureManager.h"
+#include "Game.h"
 
 Player::Player(const LoaderParams* params):SDLGameObject(params){
 
 }
 
 void Player::draw(){
-    SDLGameObject::draw();
+    auto textureManager = TextureManager::Instance();
+    auto renderer = Game::Instance()->getRenderer();
+    if(m_playerFace==LEFT){
+        textureManager->drawFrame(m_textureID,this->m_position.x,this->m_position.y,m_width,m_height,m_currentRow,m_currentFrame,renderer);
+    }
+
+    if(m_playerFace==RIGHT){
+        textureManager->drawFrame(m_textureID,this->m_position.x,this->m_position.y,m_width,m_height,m_currentRow,m_currentFrame,renderer,SDL_FLIP_HORIZONTAL);
+    }
 }
 
 void Player::update(){
@@ -15,6 +25,13 @@ void Player::update(){
     handleInput();
 
     m_currentFrame = int((SDL_GetTicks()/100)%10);
+
+    if(m_velocity.x>0){
+        m_playerFace = LEFT;
+    }
+    if(m_velocity.x<0){
+        m_playerFace = RIGHT;
+    }
 
     SDLGameObject::update();
 }

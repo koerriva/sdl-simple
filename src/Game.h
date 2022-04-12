@@ -19,11 +19,6 @@ private:
     SDL_Window* m_Window = nullptr;
     SDL_Renderer* m_Renderer = nullptr;
 
-    int m_CurrentFrame = 1;
-
-    GameObject* player;
-    GameObject* enemy;
-
     Game(){};
     static Game* s_Instance;
 
@@ -45,6 +40,8 @@ public:
     bool running() const {return m_Running;}
 
     void quit();
+
+    GameStateMachine* getStateMachine() { return m_GameStateMachine; }
 
     static Game* Instance(){
         if(s_Instance==nullptr){

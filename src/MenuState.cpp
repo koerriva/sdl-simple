@@ -2,6 +2,7 @@
 #include "TextureManager.h"
 #include "Game.h"
 #include "MenuButton.h"
+#include "PlayState.h"
 
 #include <iostream>
 
@@ -49,17 +50,17 @@ bool MenuState::onExit(){
 
     auto textureManager = TextureManager::Instance();
     textureManager->clearFromTextureMap("plan_button");
-    textureManager->clearFromTextureMap("plan_col_button");
     textureManager->clearFromTextureMap("exit_button");
-    textureManager->clearFromTextureMap("exit_col_button");
 
     return true;
 }
 
 void MenuState::s_menuToPlay(){
     std::cout << "menu to play" << std::endl;
+    Game::Instance()->getStateMachine()->changeState(new PlayState());
 }
 
 void MenuState::s_exitFromMenu(){
     std::cout << "exit from menu" << std::endl;
+    Game::Instance()->quit();
 }

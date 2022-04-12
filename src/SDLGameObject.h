@@ -8,12 +8,12 @@ using namespace glm;
 class SDLGameObject : public GameObject
 {
 protected:
-    ivec2 m_position;
-    ivec2 m_velocity;
-    ivec2 m_acceleration;
+    ivec2 m_position{0,0};
+    ivec2 m_velocity{0,0};
+    ivec2 m_acceleration{0,0};
 
-    int m_width,m_height;
-    int m_currentFrame,m_currentRow;
+    int m_width = 0,m_height = 0;
+    int m_currentFrame = 1,m_currentRow=1;
     std::string m_textureID;
 public:
     SDLGameObject(const LoaderParams* params);

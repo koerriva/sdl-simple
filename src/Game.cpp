@@ -23,13 +23,6 @@ bool Game::init(const char* title,int width,int height,bool fullscreen){
 
     InputHandler::Instance()->initialiseJoysticks();
 
-    TextureManager::Instance()->load("data/animate-alpha.png","animate",m_Renderer);
-    TextureManager::Instance()->load("data/Knight_Idle.png","knight-idle",m_Renderer);
-    TextureManager::Instance()->load("data/Knight_Run.png","knight-run",m_Renderer);
-
-    player = new Player(new LoaderParams(300,300,120,80,"knight-run"));
-    enemy = new Enemy(new LoaderParams(0,0,128,82,"animate"));
-
     m_GameStateMachine = new GameStateMachine();
     m_GameStateMachine->changeState(new MenuState());
 

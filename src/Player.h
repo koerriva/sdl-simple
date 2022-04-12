@@ -11,5 +11,9 @@ public:
     virtual void clean();
 
 private:
+    enum PlayerFace {
+        LEFT,RIGHT
+    };
+    PlayerFace m_playerFace = LEFT;
     void handleInput();
 };
