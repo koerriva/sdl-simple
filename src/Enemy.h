@@ -9,4 +9,10 @@ public:
     virtual void draw();
     virtual void update();
     virtual void clean();
+
+private:
+    enum EnemyFace {
+        LEFT,RIGHT
+    };
+    EnemyFace m_enemyFace = RIGHT;
 };
