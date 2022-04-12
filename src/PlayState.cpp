@@ -1,11 +1,19 @@
 #include "PlayState.h"
 #include "TextureManager.h"
 #include "Game.h"
+#include "InputHandler.h"
+#include "PauseState.h"
 #include <iostream>
 
 const std::string PlayState::s_playID = "PLAY";
 
 void PlayState::update(){
+
+    auto ih = InputHandler::Instance();
+    if(ih->isKeyDown(SDL_SCANCODE_ESCAPE)){
+        Game::Instance()->getStateMachine()->pushState(new PauseState());
+    }
+
     for (auto const o : m_GameObjects)
     {
         o->update();
