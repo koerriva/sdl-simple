@@ -3,6 +3,9 @@
 TextureManager* TextureManager::s_Instance = nullptr;
 
 bool TextureManager::load(std::string fileName,std::string id,SDL_Renderer* renderer){
+    if(m_TextureMap[id]!=nullptr){
+        return m_TextureMap[id];
+    }
     SDL_Surface* tmp_surface = IMG_Load(fileName.c_str());
     if(tmp_surface==nullptr){
         return false;

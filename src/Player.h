@@ -15,5 +15,6 @@ private:
         LEFT,RIGHT
     };
     PlayerFace m_playerFace = LEFT;
+
     void handleInput();
 };

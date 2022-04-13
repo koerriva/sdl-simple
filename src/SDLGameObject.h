@@ -14,6 +14,10 @@ protected:
 
     int m_width = 0,m_height = 0;
     int m_currentFrame = 1,m_currentRow=1;
+    int m_numFrames = 1;
+
+    SDL_Rect m_collisionRect;
+
     std::string m_textureID;
 public:
     SDLGameObject(const LoaderParams* params);
@@ -21,4 +25,9 @@ public:
     virtual void draw();
     virtual void update();
     virtual void clean();
+
+    ivec2 getPosition() const {return m_position;}
+    ivec2 getSize() const {return ivec2{m_width,m_height};}
+
+    SDL_Rect* getCollisionRect() {return &m_collisionRect;}
 };

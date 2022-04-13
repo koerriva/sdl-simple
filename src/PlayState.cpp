@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "InputHandler.h"
 #include "PauseState.h"
+#include "GameOverState.h"
 #include <iostream>
 
 const std::string PlayState::s_playID = "PLAY";
@@ -17,6 +18,11 @@ void PlayState::update(){
     for (auto const o : m_GameObjects)
     {
         o->update();
+    }
+
+    bool hit = checkCollision(dynamic_cast<SDLGameObject*>(player),dynamic_cast<SDLGameObject*>(enemy));
+    if(hit){
+        Game::Instance()->getStateMachine()->pushState(new GameOverState());
     }
 }
 
@@ -45,8 +51,8 @@ bool PlayState::onEnter(){
     TextureManager::Instance()->load("data/Knight2_DeathNoMovement.png","enemy-death",renderer);
     TextureManager::Instance()->load("data/Knight2_AttackNoMovement.png","enemy-attack",renderer);
 
-    GameObject* player = new Player(new LoaderParams(300,300,120,80,"knight-run"));
-    GameObject* enemy = new Enemy(new LoaderParams(400,300,120,80,"enemy-attack"));
+    player = new Player(new LoaderParams(300,300,120,80,"knight-run"));
+    enemy = new Enemy(new LoaderParams(400,300,120,80,"enemy-attack"));
 
     m_GameObjects.push_back(player);
     m_GameObjects.push_back(enemy);
@@ -76,4 +82,12 @@ bool PlayState::onExit(){
     textureManager->clearFromTextureMap("enemy-attack");
 
     return true;
+}
+
+bool PlayState::checkCollision(SDLGameObject* p1,SDLGameObject* p2){
+    SDL_Rect* p1Rect =  p1->getCollisionRect();
+    SDL_Rect* p2Rect =  p2->getCollisionRect();
+    SDL_Rect result;
+
+    return SDL_IntersectRect(p1Rect,p2Rect,&result);
 }
