@@ -2,7 +2,13 @@
 #include "Game.h"
 #include "TextureManager.h"
 
-Enemy::Enemy(const LoaderParams* params):SDLGameObject(params){
+Enemy::Enemy():SDLGameObject(){
+    
+}
+
+void Enemy::load(const LoaderParams* params){
+    SDLGameObject::load(params);
+
     m_velocity = {0,0};
 
     m_collisionRect.x = m_position.x+15;
@@ -27,7 +33,7 @@ void Enemy::draw(){
 }
 
 void Enemy::update(){
-    m_currentFrame = int((SDL_GetTicks()/100)%4);
+    m_currentFrame = int((SDL_GetTicks()/100)%m_numFrames);
     
     SDLGameObject::update();
 

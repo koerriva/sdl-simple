@@ -4,6 +4,7 @@
 #include "InputHandler.h"
 #include "PauseState.h"
 #include "GameOverState.h"
+#include "StateParser.h"
 #include <iostream>
 
 const std::string PlayState::s_playID = "PLAY";
@@ -19,6 +20,9 @@ void PlayState::update(){
     {
         o->update();
     }
+
+    GameObject* player = m_GameObjects[0];
+    GameObject* enemy = m_GameObjects[1];
 
     bool hit = checkCollision(dynamic_cast<SDLGameObject*>(player),dynamic_cast<SDLGameObject*>(enemy));
     if(hit){
@@ -36,26 +40,29 @@ void PlayState::render(){
 bool PlayState::onEnter(){
     std::cout << "entring PlayState" << std::endl;
 
-    auto textureManager = TextureManager::Instance();
-    auto renderer = Game::Instance()->getRenderer();
+    // auto textureManager = TextureManager::Instance();
+    // auto renderer = Game::Instance()->getRenderer();
 
-    TextureManager::Instance()->load("data/Knight_Idle.png","knight-idle",renderer);
-    TextureManager::Instance()->load("data/Knight_Run.png","knight-run",renderer);
-    TextureManager::Instance()->load("data/Knight_Hit.png","knight-hit",renderer);
-    TextureManager::Instance()->load("data/Knight_DeathNoMovement.png","knight-death",renderer);
-    TextureManager::Instance()->load("data/Knight_AttackNoMovement.png","knight-attack",renderer);
+    // TextureManager::Instance()->load("data/Knight_Idle.png","knight-idle",renderer);
+    // TextureManager::Instance()->load("data/Knight_Run.png","knight-run",renderer);
+    // TextureManager::Instance()->load("data/Knight_Hit.png","knight-hit",renderer);
+    // TextureManager::Instance()->load("data/Knight_DeathNoMovement.png","knight-death",renderer);
+    // TextureManager::Instance()->load("data/Knight_AttackNoMovement.png","knight-attack",renderer);
 
-    TextureManager::Instance()->load("data/Knight2_Idle.png","enemy-idle",renderer);
-    TextureManager::Instance()->load("data/Knight2_Run.png","enemy-run",renderer);
-    TextureManager::Instance()->load("data/Knight2_Hit.png","enemy-hit",renderer);
-    TextureManager::Instance()->load("data/Knight2_DeathNoMovement.png","enemy-death",renderer);
-    TextureManager::Instance()->load("data/Knight2_AttackNoMovement.png","enemy-attack",renderer);
+    // TextureManager::Instance()->load("data/Knight2_Idle.png","enemy-idle",renderer);
+    // TextureManager::Instance()->load("data/Knight2_Run.png","enemy-run",renderer);
+    // TextureManager::Instance()->load("data/Knight2_Hit.png","enemy-hit",renderer);
+    // TextureManager::Instance()->load("data/Knight2_DeathNoMovement.png","enemy-death",renderer);
+    // TextureManager::Instance()->load("data/Knight2_AttackNoMovement.png","enemy-attack",renderer);
 
-    player = new Player(new LoaderParams(300,300,120,80,"knight-run"));
-    enemy = new Enemy(new LoaderParams(400,300,120,80,"enemy-attack"));
+    // player = new Player(new LoaderParams(300,300,120,80,"knight-run"));
+    // enemy = new Enemy(new LoaderParams(400,300,120,80,"enemy-attack"));
 
-    m_GameObjects.push_back(player);
-    m_GameObjects.push_back(enemy);
+    // m_GameObjects.push_back(player);
+    // m_GameObjects.push_back(enemy);
+
+    StateParser stateParser;
+    stateParser.parseState("game.xml",s_playID,&m_GameObjects,&m_textureIDs);
 
     return true;
 }
@@ -69,17 +76,10 @@ bool PlayState::onExit(){
     m_GameObjects.clear();
 
     auto textureManager = TextureManager::Instance();
-    textureManager->clearFromTextureMap("knight-run");
-    textureManager->clearFromTextureMap("knight-idle");
-    textureManager->clearFromTextureMap("knight-hit");
-    textureManager->clearFromTextureMap("knight-death");
-    textureManager->clearFromTextureMap("knight-attack");
 
-    textureManager->clearFromTextureMap("enemy-run");
-    textureManager->clearFromTextureMap("enemy-idle");
-    textureManager->clearFromTextureMap("enemy-hit");
-    textureManager->clearFromTextureMap("enemy-death");
-    textureManager->clearFromTextureMap("enemy-attack");
+    for (auto const t : m_textureIDs){
+        textureManager->clearFromTextureMap(t);
+    }
 
     return true;
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<STATES>
+    <MENU>
+        <TEXTURES>
+            <texture filename="data/Play_Button.png" ID="play_button"/>
+            <texture filename="data/Exit_Button.png" ID="exit_button"/>
+        </TEXTURES>
+        <OBJECTS>
+            <object type="MenuButton" x="340" y="150" width="600" height="200" textureID="play_button" callbackID="1"/>
+            <object type="MenuButton" x="340" y="370" width="600" height="200" textureID="exit_button" callbackID="2"/>
+        </OBJECTS>
+    </MENU>
+    <PAUSE>
+        <TEXTURES>
+            <texture filename="data/Menu_Button.png" ID="menu_button"/>
+            <texture filename="data/Resume_Button.png" ID="resume_button"/>
+        </TEXTURES>
+        <OBJECTS>
+            <object type="MenuButton" x="340" y="150" width="600" height="200" textureID="menu_button" callbackID="1"/>
+            <object type="MenuButton" x="340" y="370" width="600" height="200" textureID="resume_button" callbackID="2"/>
+        </OBJECTS>
+    </PAUSE>
+    <PLAY>
+        <TEXTURES>
+            <texture filename="data/Knight_Run.png" ID="knight_run"/>
+            <texture filename="data/Knight2_AttackNoMovement.png" ID="enemy_attack"/>
+        </TEXTURES>
+        <OBJECTS>
+            <object type="Player" x="300" y="300" width="120" height="80" numFrames="10" textureID="knight_run"/>
+            <object type="Enemy" x="400" y="300" width="120" height="80" numFrames="4" textureID="enemy_attack"/>
+        </OBJECTS>
+    </PLAY>
+    <GAMEOVER>
+        <TEXTURES>
+            <texture filename="data/Continue_Button.png" ID="continue_text"/>
+            <texture filename="data/Menu_Button.png" ID="menu_button"/>
+            <texture filename="data/Resume_Button.png" ID="resume_button"/>
+        </TEXTURES>
+        <OBJECTS>
+            <object type="AnimatedGraphic" x="340" y="20" width="600" height="200" numFrames="2" textureID="continue_text"/>
+            <object type="MenuButton" x="340" y="240" width="600" height="200" textureID="menu_button" callbackID="1"/>
+            <object type="MenuButton" x="340" y="460" width="600" height="200" textureID="resume_button" callbackID="2"/>
+        </OBJECTS>
+    </GAMEOVER>
+</STATES>

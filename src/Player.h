@@ -1,14 +1,17 @@
 #pragma once
 
 #include "SDLGameObject.h"
+#include "GameObjectFactory.h"
 
 class Player : public SDLGameObject
 {
 public:
-    Player(const LoaderParams* params);
+    Player();
     virtual void draw();
     virtual void update();
     virtual void clean();
+
+    virtual void load(const LoaderParams* params);
 
 private:
     enum PlayerFace {
@@ -17,4 +20,11 @@ private:
     PlayerFace m_playerFace = LEFT;
 
     void handleInput();
+};
+
+class PlayerCreator : public BaseCreator {
+public:
+    GameObject* createGameObject() const  {
+        return new Player();
+    }
 };

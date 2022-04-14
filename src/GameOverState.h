@@ -1,11 +1,12 @@
 #pragma once
 
 #include "GameState.h"
+#include "MenuState.h"
 #include <vector>
 
 class GameObject;
 
-class GameOverState : public GameState
+class GameOverState : public MenuState
 {
 private:
     /* data */
@@ -25,4 +26,6 @@ private:
     static const std::string s_GameOverID;
 
     std::vector<GameObject*> m_GameObjects;
+
+    virtual void setCallbacks(const std::vector<callback>& callbacks);
 };

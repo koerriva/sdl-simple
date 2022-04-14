@@ -1,15 +1,25 @@
 #pragma once
 
 #include "SDLGameObject.h"
+#include "GameObjectFactory.h"
 
 class AnimatedGraphic : public SDLGameObject
 {
 public:
-    AnimatedGraphic(const LoaderParams* params,int animSpeed=10);
+    AnimatedGraphic();
     virtual void update();
     virtual void draw();
     virtual void clean();
 
+    virtual void load(const LoaderParams* params);
+
 private:
-    int m_animSpeed = 1;
+    int m_animSpeed = 10;
+};
+
+class AnimatedGraphicCreator : public BaseCreator {
+public:
+    GameObject* createGameObject() const {
+        return new AnimatedGraphic();
+    }
 };

@@ -3,6 +3,8 @@
 #include "InputHandler.h"
 #include "MenuState.h"
 #include "PlayState.h"
+#include "MenuButton.h"
+#include "AnimatedGraphic.h"
 
 Game* Game::s_Instance = nullptr;
 
@@ -24,8 +26,13 @@ bool Game::init(const char* title,int width,int height,bool fullscreen){
 
     InputHandler::Instance()->initialiseJoysticks();
 
+    GameObjectFactory::Instance()->registerType("MenuButton",new MenuButtonCreator());
+    GameObjectFactory::Instance()->registerType("Player",new PlayerCreator());
+    GameObjectFactory::Instance()->registerType("Enemy",new EnemyCreator());
+    GameObjectFactory::Instance()->registerType("AnimatedGraphic",new AnimatedGraphicCreator());
+
     m_GameStateMachine = new GameStateMachine();
-    m_GameStateMachine->changeState(new MenuState());
+    m_GameStateMachine->changeState(new MainMenuState());
 
     m_Running = true;
     return true;

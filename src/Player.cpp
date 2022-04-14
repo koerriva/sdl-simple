@@ -3,7 +3,13 @@
 #include "TextureManager.h"
 #include "Game.h"
 
-Player::Player(const LoaderParams* params):SDLGameObject(params){
+Player::Player():SDLGameObject(){
+
+}
+
+void Player::load(const LoaderParams* params){
+    SDLGameObject::load(params);
+    
     m_velocity = ivec2(0,0);
 
     m_collisionRect.x = m_position.x+40;
@@ -32,7 +38,7 @@ void Player::update(){
 
     handleInput();
 
-    m_currentFrame = int((SDL_GetTicks()/100)%10);
+    m_currentFrame = int((SDL_GetTicks()/100)%m_numFrames);
 
     if(m_velocity.x>0){
         m_playerFace = LEFT;

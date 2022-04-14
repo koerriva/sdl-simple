@@ -20,11 +20,12 @@ protected:
 
     std::string m_textureID;
 public:
-    SDLGameObject(const LoaderParams* params);
-
+    SDLGameObject();
     virtual void draw();
     virtual void update();
     virtual void clean();
+ 
+    virtual void load(const LoaderParams* params);
 
     ivec2 getPosition() const {return m_position;}
     ivec2 getSize() const {return ivec2{m_width,m_height};}

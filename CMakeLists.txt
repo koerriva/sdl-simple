@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.2)
 
 project(sdl-simple)
 
@@ -11,6 +11,9 @@ include_directories(src)
 
 add_executable(simple ${SRC_DIR})
 
-target_link_libraries(simple sdl2 sdl2_image)
+target_link_libraries(simple mingw32 sdl2main sdl2 sdl2_image)
+
+# target_link_options(simple PRIVATE -mwindows -static-libgcc -static-libstdc++)
 
 file(COPY data DESTINATION .)
+file(COPY data/game.xml DESTINATION ${CMAKE_BINARY_DIR})

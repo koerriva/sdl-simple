@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SDLGameObject.h"
+#include "GameObjectFactory.h"
 
 class MenuButton : public SDLGameObject
 {
@@ -12,12 +13,26 @@ private:
     };
 
     void (*m_callback)();
+    int m_callbackID;
     bool m_released;
 
 public:
-    MenuButton(const LoaderParams* params,void (*m_callback)());
+    MenuButton();
 
     virtual void draw();
     virtual void update();
     virtual void clean();
+
+    virtual void load(const LoaderParams* params);
+
+    void setCallback(void (*m_callback)());
+
+    int getCallbackID();
+};
+
+class MenuButtonCreator : public BaseCreator {
+public:
+    GameObject* createGameObject() const {
+        return new MenuButton();
+    }
 };

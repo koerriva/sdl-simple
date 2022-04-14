@@ -1,7 +1,11 @@
 #include "SDLGameObject.h"
 #include "Game.h"
 
-SDLGameObject::SDLGameObject(const LoaderParams* params):GameObject(params){
+SDLGameObject::SDLGameObject():GameObject(){
+
+}
+
+void SDLGameObject::load(const LoaderParams* params){
     this->m_position = ivec2(params->getX(),params->getY());
     this->m_velocity = ivec2(0,0);
 
