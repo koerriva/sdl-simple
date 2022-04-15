@@ -3,6 +3,7 @@
 #include "GameState.h"
 #include "GameObject.h"
 #include "SDLGameObject.h"
+#include "Level.h"
 #include <vector>
 
 class PlayState : public GameState
@@ -17,6 +18,8 @@ public:
     virtual std::string getStateID() const {return s_playID;}
 private:
     static const std::string s_playID;
+
+    Level* m_currentLevel = nullptr;
 
     std::vector<GameObject*> m_GameObjects;
 

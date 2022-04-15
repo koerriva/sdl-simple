@@ -5,6 +5,7 @@
 #include "PauseState.h"
 #include "GameOverState.h"
 #include "StateParser.h"
+#include "LevelParser.h"
 #include <iostream>
 
 const std::string PlayState::s_playID = "PLAY";
@@ -16,6 +17,7 @@ void PlayState::update(){
         Game::Instance()->getStateMachine()->pushState(new PauseState());
     }
 
+    m_currentLevel->update();
     for (auto const o : m_GameObjects)
     {
         o->update();
@@ -31,6 +33,7 @@ void PlayState::update(){
 }
 
 void PlayState::render(){
+    m_currentLevel->render();
     for (auto const o : m_GameObjects)
     {
         o->draw();
@@ -40,29 +43,11 @@ void PlayState::render(){
 bool PlayState::onEnter(){
     std::cout << "entring PlayState" << std::endl;
 
-    // auto textureManager = TextureManager::Instance();
-    // auto renderer = Game::Instance()->getRenderer();
-
-    // TextureManager::Instance()->load("data/Knight_Idle.png","knight-idle",renderer);
-    // TextureManager::Instance()->load("data/Knight_Run.png","knight-run",renderer);
-    // TextureManager::Instance()->load("data/Knight_Hit.png","knight-hit",renderer);
-    // TextureManager::Instance()->load("data/Knight_DeathNoMovement.png","knight-death",renderer);
-    // TextureManager::Instance()->load("data/Knight_AttackNoMovement.png","knight-attack",renderer);
-
-    // TextureManager::Instance()->load("data/Knight2_Idle.png","enemy-idle",renderer);
-    // TextureManager::Instance()->load("data/Knight2_Run.png","enemy-run",renderer);
-    // TextureManager::Instance()->load("data/Knight2_Hit.png","enemy-hit",renderer);
-    // TextureManager::Instance()->load("data/Knight2_DeathNoMovement.png","enemy-death",renderer);
-    // TextureManager::Instance()->load("data/Knight2_AttackNoMovement.png","enemy-attack",renderer);
-
-    // player = new Player(new LoaderParams(300,300,120,80,"knight-run"));
-    // enemy = new Enemy(new LoaderParams(400,300,120,80,"enemy-attack"));
-
-    // m_GameObjects.push_back(player);
-    // m_GameObjects.push_back(enemy);
-
     StateParser stateParser;
     stateParser.parseState("game.xml",s_playID,&m_GameObjects,&m_textureIDs);
+
+    LevelParser levelParser;
+    m_currentLevel = levelParser.parseLevel("terrain.tmx");
 
     return true;
 }

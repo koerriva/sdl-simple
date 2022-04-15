@@ -14,6 +14,8 @@ add_executable(simple ${SRC_DIR})
 target_link_libraries(simple mingw32 sdl2main sdl2 sdl2_image)
 
 # target_link_options(simple PRIVATE -mwindows -static-libgcc -static-libstdc++)
+# target_link_options(simple PRIVATE -static -lhid -lsetupapi -mwindows -static-libgcc -static-libstdc++)
 
 file(COPY data DESTINATION .)
-file(COPY data/game.xml DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY game.xml DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY terrain.tmx DESTINATION ${CMAKE_BINARY_DIR})

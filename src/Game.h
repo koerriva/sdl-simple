@@ -23,6 +23,8 @@ private:
     static Game* s_Instance;
 
     GameStateMachine* m_GameStateMachine;
+
+    int m_width,m_height;
 public:
     
     ~Game(){};
@@ -52,4 +54,7 @@ public:
     }
 
     SDL_Renderer* getRenderer() const {return m_Renderer;}
+
+    int getGameWidth() const { return m_width; }
+    int getGameHeight() const { return m_height; }
 };

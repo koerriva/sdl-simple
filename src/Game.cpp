@@ -12,6 +12,9 @@ bool Game::init(const char* title,int width,int height,bool fullscreen){
     int r = SDL_Init(SDL_INIT_EVERYTHING);
     if(r<0)return false;
 
+    m_width = width;
+    m_height = height;
+
     int flags = 0;
     if(fullscreen){
         flags = SDL_WINDOW_FULLSCREEN;
