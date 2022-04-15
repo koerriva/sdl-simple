@@ -24,7 +24,7 @@ bool Game::init(const char* title,int width,int height,bool fullscreen){
 
     m_Window = SDL_CreateWindow(title,SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,width,height,flags);
     m_Renderer = SDL_CreateRenderer(m_Window,-1,0);
-    SDL_SetRenderDrawColor(m_Renderer,131,94,29,255);//蜴蜊绿
+    SDL_SetRenderDrawColor(m_Renderer,186,204,217,255);//云水蓝
     SDL_RenderClear(m_Renderer);
 
     InputHandler::Instance()->initialiseJoysticks();
@@ -42,7 +42,7 @@ bool Game::init(const char* title,int width,int height,bool fullscreen){
 }
 
 void Game::render(){
-    SDL_SetRenderDrawColor(m_Renderer,131,94,29,255);//蜴蜊绿
+    SDL_SetRenderDrawColor(m_Renderer,186,204,217,255);//云水蓝
     SDL_RenderClear(m_Renderer);
 
     m_GameStateMachine->render();
