@@ -12,10 +12,8 @@ void Player::load(const LoaderParams* params){
     
     m_velocity = ivec2(0,0);
 
-    m_collisionRect.x = m_position.x+40;
-    m_collisionRect.y = m_position.y+40;
-    m_collisionRect.w = 30;
-    m_collisionRect.h = 40;
+    m_collisionRect.x += m_position.x;
+    m_collisionRect.y += m_position.y;
 }
 
 void Player::draw(){
@@ -48,9 +46,6 @@ void Player::update(){
     }
 
     SDLGameObject::update();
-
-    m_collisionRect.x = m_position.x+40;
-    m_collisionRect.y = m_position.y+40;
 }
 
 void Player::clean(){

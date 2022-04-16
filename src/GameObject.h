@@ -5,15 +5,17 @@
 
 class LoaderParams {
 public:
-    LoaderParams(int x,int y,int width,int height,std::string textureID,int numFrames=1,int animtedSpeed=10,int callbackID=0){
+    LoaderParams(int x,int y,int width,int height,std::string textureID,int numFrames=1,int animSpeed=10,int callbackID=0
+        ,SDL_Rect collision={0}){
         this->m_x = x;
         this->m_y = y;
         this->m_width = width;
         this->m_height = height;
         this->m_textureID = textureID;
         this->m_numFrames = numFrames;
-        this->m_animtedSpeed = animtedSpeed;
+        this->m_animSpeed = animSpeed;
         this->m_callbackID = callbackID;
+        this->m_collision = collision;
     }
 
     int getX() const {return m_x;}
@@ -22,8 +24,9 @@ public:
     int getHeight() const {return m_height;}
     int getNumFrames() const {return m_numFrames;}
     std::string getTextureID() const {return m_textureID;}
-    int getAnimtedSpeed() const {return m_animtedSpeed;}
+    int getAnimSpeed() const {return m_animSpeed;}
     int getCallbackID() const {return m_callbackID;}
+    SDL_Rect getCollision() const {return m_collision;}
     
 private:
     int m_x,m_y;
@@ -31,8 +34,10 @@ private:
     int m_numFrames;
     std::string m_textureID;
 
-    int m_animtedSpeed;
+    int m_animSpeed;
     int m_callbackID;
+
+    SDL_Rect m_collision;
 };
 
 class GameObject

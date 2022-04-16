@@ -23,5 +23,5 @@ private:
 
     std::vector<GameObject*> m_GameObjects;
 
-    bool checkCollision(SDLGameObject* p1,SDLGameObject* p2);
+    bool checkCollision(SDL_Rect* r1,SDL_Rect* r2);
 };

@@ -4,6 +4,8 @@
 #include "Base64.h"
 #include "Layer.h"
 #include "TileLayer.h"
+#include "ObjectLayer.h"
+
 #include <iostream>
 
 Level* LevelParser::parseLevel(const char* levelFile){
@@ -23,6 +25,12 @@ Level* LevelParser::parseLevel(const char* levelFile){
     m_width = mapRoot->IntAttribute("width");
     m_height = mapRoot->IntAttribute("height");
 
+    //parse textures
+    for (XMLElement* e = mapRoot->FirstChildElement("properties");e;e=e->NextSiblingElement("properties"))
+    {
+        parseTextures(e);
+    }
+    
     //parse tileset
     for (XMLElement* e = mapRoot->FirstChildElement("tileset");e; e=e->NextSiblingElement("tileset"))
     {
@@ -34,8 +42,24 @@ Level* LevelParser::parseLevel(const char* levelFile){
     {
         parseTileLayer(e,level->getLayers(),level->getTilesets());
     }
+
+    //parse object layer
+    for (XMLElement* e = mapRoot->FirstChildElement("objectgroup");e; e=e->NextSiblingElement("objectgroup"))
+    {
+        parseObjectLayer(e,level->getLayers());
+    }
     
     return level;
+}
+
+void LevelParser::parseTextures(XMLElement* root){
+    auto tm = TextureManager::Instance();
+    for(XMLElement* e = root->FirstChildElement("property");e;e=e->NextSiblingElement("property")){
+        auto id = e->Attribute("name");
+        auto file = e->Attribute("value");
+
+        tm->load(file,id,Game::Instance()->getRenderer());
+    }
 }
 
 
@@ -118,4 +142,77 @@ void LevelParser::parseTileLayer(XMLElement* root,std::vector<Layer*>* layers,co
     tileLayer->setTileIDs(data);
 
     layers->push_back(tileLayer);
+}
+
+void LevelParser::parseObjectLayer(XMLElement* root,std::vector<Layer*>* layers){
+    ObjectLayer* objectLayer = new ObjectLayer();
+
+    for (XMLElement* e=root->FirstChildElement("object");e;e=e->NextSiblingElement("object"))
+    {
+        auto id = e->IntAttribute("id");
+        auto name = e->Attribute("name");
+
+        std::string type = e->Attribute("type");
+        GameObject* gameObject = GameObjectFactory::Instance()->create(type);
+
+        int x = int(e->FloatAttribute("x"));
+        int y = int(e->FloatAttribute("y"));
+
+        int numFrames=0,width=0,height=0,callbackID=0,animSpeed=10;
+        std::string textureID="default_object";
+        SDL_Rect collision;
+
+        auto properties = e->FirstChildElement("properties");
+        if(properties){
+            for (XMLElement* p = properties->FirstChildElement("property");p;p=p->NextSiblingElement("property"))
+            {
+                std::string name = p->Attribute("name");
+                
+                if(name=="numFrames"){
+                    numFrames = p->IntAttribute("value");
+                }
+                if(name=="textureWidth"){
+                    width = p->IntAttribute("value");
+                }
+                if(name=="textureHeight"){
+                    height = p->IntAttribute("value");
+                }
+                if(name=="textureID"){
+                    textureID = p->Attribute("value");
+                }
+                if(name=="callbackID"){
+                    callbackID = p->IntAttribute("value");
+                }
+                if(name=="animSpeed"){
+                    animSpeed = p->IntAttribute("value",10);
+                }
+
+                if(name=="collisionOffsetX"){
+                    collision.x = p->IntAttribute("value");
+                }
+                if(name=="collisionOffsetY"){
+                    collision.y = p->IntAttribute("value");
+                }
+                if(name=="collisionWidth"){
+                    collision.w = p->IntAttribute("value");
+                }
+                if(name=="collisionHeight"){
+                    collision.h = p->IntAttribute("value");
+                }
+            }
+
+        }
+
+        gameObject->load(new LoaderParams(x,y,width,height,textureID,numFrames,animSpeed,callbackID,collision));
+        objectLayer->getGameObjects()->push_back(gameObject);
+
+        if(type=="Player"){
+            objectLayer->setPlayer(gameObject);
+        }
+        if(type=="Enemy"){
+            objectLayer->addEnemy(gameObject);
+        }
+    }
+
+    layers->push_back(objectLayer);
 }

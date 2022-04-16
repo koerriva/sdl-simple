@@ -29,6 +29,5 @@ public:
 
     ivec2 getPosition() const {return m_position;}
     ivec2 getSize() const {return ivec2{m_width,m_height};}
-
     SDL_Rect* getCollisionRect() {return &m_collisionRect;}
 };

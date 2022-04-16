@@ -21,14 +21,14 @@
         </OBJECTS>
     </PAUSE>
     <PLAY>
-        <TEXTURES>
+        <!-- <TEXTURES>
             <texture filename="data/Knight_Run.png" ID="knight_run"/>
             <texture filename="data/Knight2_AttackNoMovement.png" ID="enemy_attack"/>
         </TEXTURES>
         <OBJECTS>
             <object type="Player" x="300" y="300" width="120" height="80" numFrames="10" textureID="knight_run"/>
             <object type="Enemy" x="400" y="300" width="120" height="80" numFrames="4" textureID="enemy_attack"/>
-        </OBJECTS>
+        </OBJECTS> -->
     </PLAY>
     <GAMEOVER>
         <TEXTURES>

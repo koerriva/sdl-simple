@@ -11,10 +11,8 @@ void Enemy::load(const LoaderParams* params){
 
     m_velocity = {0,0};
 
-    m_collisionRect.x = m_position.x+15;
-    m_collisionRect.y = m_position.y+40;
-    m_collisionRect.w = 30;
-    m_collisionRect.h = 40;
+    m_collisionRect.x += m_position.x;
+    m_collisionRect.y += m_position.y;
 }
 
 void Enemy::draw(){
@@ -36,9 +34,6 @@ void Enemy::update(){
     m_currentFrame = int((SDL_GetTicks()/100)%m_numFrames);
     
     SDLGameObject::update();
-
-    m_collisionRect.x = m_position.x+15;
-    m_collisionRect.y = m_position.y+40;
 }
 
 void Enemy::clean(){

@@ -6,6 +6,7 @@
 #include "GameOverState.h"
 #include "StateParser.h"
 #include "LevelParser.h"
+#include "ObjectLayer.h"
 #include <iostream>
 
 const std::string PlayState::s_playID = "PLAY";
@@ -18,33 +19,42 @@ void PlayState::update(){
     }
 
     m_currentLevel->update();
-    for (auto const o : m_GameObjects)
+    ObjectLayer* objectLayer = nullptr;
+    std::vector<Layer*>* layers = m_currentLevel->getLayers();
+    for (auto layer : *layers)
     {
-        o->update();
+        objectLayer = dynamic_cast<ObjectLayer*>(layer);
+        if(objectLayer){
+            break;
+        }
     }
 
-    GameObject* player = m_GameObjects[0];
-    GameObject* enemy = m_GameObjects[1];
+    if(objectLayer){
+        Player* player = objectLayer->getPlayer();
+        bool hit = false;
+        for (auto enemy : objectLayer->getEnemies())
+        {
+            hit = checkCollision(player->getCollisionRect(),enemy->getCollisionRect());
+            if(hit){
+                break;
+            }
+        }
 
-    bool hit = checkCollision(dynamic_cast<SDLGameObject*>(player),dynamic_cast<SDLGameObject*>(enemy));
-    if(hit){
-        Game::Instance()->getStateMachine()->pushState(new GameOverState());
+        if(hit){
+            Game::Instance()->getStateMachine()->pushState(new GameOverState());
+        }
     }
 }
 
 void PlayState::render(){
     m_currentLevel->render();
-    for (auto const o : m_GameObjects)
-    {
-        o->draw();
-    }
 }
 
 bool PlayState::onEnter(){
     std::cout << "entring PlayState" << std::endl;
 
-    StateParser stateParser;
-    stateParser.parseState("game.xml",s_playID,&m_GameObjects,&m_textureIDs);
+    // StateParser stateParser;
+    // stateParser.parseState("game.xml",s_playID,&m_GameObjects,&m_textureIDs);
 
     LevelParser levelParser;
     m_currentLevel = levelParser.parseLevel("terrain.tmx");
@@ -69,10 +79,7 @@ bool PlayState::onExit(){
     return true;
 }
 
-bool PlayState::checkCollision(SDLGameObject* p1,SDLGameObject* p2){
-    SDL_Rect* p1Rect =  p1->getCollisionRect();
-    SDL_Rect* p2Rect =  p2->getCollisionRect();
+bool PlayState::checkCollision(SDL_Rect* r1,SDL_Rect* r2){
     SDL_Rect result;
-
-    return SDL_IntersectRect(p1Rect,p2Rect,&result);
+    return SDL_IntersectRect(r1,r2,&result);
 }

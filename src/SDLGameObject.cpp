@@ -18,6 +18,8 @@ void SDLGameObject::load(const LoaderParams* params){
     this->m_currentRow = 1;
 
     this->m_numFrames = params->getNumFrames();
+
+    this->m_collisionRect = params->getCollision();
 }
 
 void SDLGameObject::draw(){
@@ -27,6 +29,9 @@ void SDLGameObject::draw(){
 void SDLGameObject::update(){
     m_position += m_velocity;
     m_velocity += m_acceleration;
+
+    m_collisionRect.x += m_velocity.x;
+    m_collisionRect.y += m_velocity.y;
 }
 
 void SDLGameObject::clean(){

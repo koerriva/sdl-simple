@@ -8,7 +8,7 @@ AnimatedGraphic::AnimatedGraphic():SDLGameObject(){
 void AnimatedGraphic::load(const LoaderParams* params){
     SDLGameObject::load(params);
     
-    this->m_animSpeed = params->getAnimtedSpeed();
+    this->m_animSpeed = params->getAnimSpeed();
 }
 
 void AnimatedGraphic::update(){

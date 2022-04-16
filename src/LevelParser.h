@@ -10,6 +10,8 @@ class LevelParser
 private:
     void parseTilesets(XMLElement* root,std::vector<Tileset>* tilesets);
     void parseTileLayer(XMLElement* root,std::vector<Layer*>* layers,const std::vector<Tileset>* tilesets);
+    void parseTextures(XMLElement* root);
+    void parseObjectLayer(XMLElement* root,std::vector<Layer*>* layers);
 
     int m_tileSize;
     int m_width;
