@@ -16,10 +16,12 @@
   <object id="1" name="Knight_Will" type="Player" x="0" y="0" width="120" height="40">
    <properties>
     <property name="collisionHeight" type="int" value="40"/>
-    <property name="collisionOffsetX" type="int" value="40"/>
+    <property name="collisionOffsetX" type="int" value="0"/>
     <property name="collisionOffsetY" type="int" value="0"/>
     <property name="collisionWidth" type="int" value="30"/>
     <property name="numFrames" type="int" value="10"/>
+    <property name="spriteOffsetX" type="int" value="80"/>
+    <property name="spriteOffsetY" type="int" value="0"/>
     <property name="textureHeight" type="int" value="40"/>
     <property name="textureID" value="knight_run"/>
     <property name="textureWidth" value="120"/>
@@ -28,10 +30,12 @@
   <object id="2" name="Knight_Death" type="Enemy" x="791.977" y="654.388" width="120" height="80">
    <properties>
     <property name="collisionHeight" type="int" value="40"/>
-    <property name="collisionOffsetX" type="int" value="15"/>
+    <property name="collisionOffsetX" type="int" value="30"/>
     <property name="collisionOffsetY" type="int" value="40"/>
     <property name="collisionWidth" type="int" value="30"/>
     <property name="numFrames" type="int" value="4"/>
+    <property name="spriteOffsetX" type="int" value="80"/>
+    <property name="spriteOffsetY" type="int" value="0"/>
     <property name="textureHeight" type="int" value="80"/>
     <property name="textureID" value="enemy_attack"/>
     <property name="textureWidth" type="int" value="120"/>

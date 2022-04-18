@@ -20,26 +20,26 @@ bool TextureManager::load(std::string fileName,std::string id,SDL_Renderer* rend
     return true;
 }
 
-void TextureManager::draw(std::string id,int x,int y,int width,int height,SDL_Renderer* renderer,SDL_RendererFlip flip){
+void TextureManager::draw(std::string id,int x,int y,int width,int height,SDL_Renderer* renderer,SDL_RendererFlip flip,RenderOffset renderOffset){
     SDL_Rect source,dist;
     source.x = 0;
     source.y = 0;
     source.w = dist.w = width;
     source.h = dist.h = height;
-    dist.x = x;
-    dist.y = y;
+    dist.x = x - renderOffset.spriteOffsetX;
+    dist.y = y - renderOffset.spriteOffsetY;
 
     SDL_RenderCopyEx(renderer,m_TextureMap[id],&source,&dist,0,0,flip);
 }
 
-void TextureManager::drawFrame(std::string id,int x,int y,int width,int height,int cuurrentRow,int currentFrame,SDL_Renderer* renderer,SDL_RendererFlip flip){
+void TextureManager::drawFrame(std::string id,int x,int y,int width,int height,int currentRow,int currentFrame,SDL_Renderer* renderer,SDL_RendererFlip flip,RenderOffset renderOffset){
     SDL_Rect source,dist;
     source.x = width * currentFrame;
-    source.y = height * (cuurrentRow-1);
+    source.y = height * (currentRow-1);
     source.w = dist.w = width;
     source.h = dist.h = height;
-    dist.x = x;
-    dist.y = y;
+    dist.x = x - renderOffset.spriteOffsetX;
+    dist.y = y - renderOffset.spriteOffsetY;
 
     SDL_RenderCopyEx(renderer,m_TextureMap[id],&source,&dist,0,0,flip);
 }

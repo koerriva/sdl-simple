@@ -19,6 +19,8 @@ private:
     };
     PlayerFace m_playerFace = LEFT;
 
+    RenderOffset renderOffset = {0};
+
     void handleInput();
 };
 

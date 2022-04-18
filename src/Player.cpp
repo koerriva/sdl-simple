@@ -9,6 +9,9 @@ Player::Player():SDLGameObject(){
 
 void Player::load(const LoaderParams* params){
     SDLGameObject::load(params);
+
+    renderOffset.spriteOffsetX = params->getSpriteOffsetX();
+    renderOffset.spriteOffsetY = params->getSpriteOffsetY();
     
     m_velocity = ivec2(0,0);
 
@@ -20,11 +23,11 @@ void Player::draw(){
     auto textureManager = TextureManager::Instance();
     auto renderer = Game::Instance()->getRenderer();
     if(m_playerFace==LEFT){
-        textureManager->drawFrame(m_textureID,this->m_position.x,this->m_position.y,m_width,m_height,m_currentRow,m_currentFrame,renderer);
+        textureManager->drawFrame(m_textureID,this->m_position.x,this->m_position.y,m_width,m_height,m_currentRow,m_currentFrame,renderer,SDL_FLIP_NONE,renderOffset);
     }
 
     if(m_playerFace==RIGHT){
-        textureManager->drawFrame(m_textureID,this->m_position.x,this->m_position.y,m_width,m_height,m_currentRow,m_currentFrame,renderer,SDL_FLIP_HORIZONTAL);
+        textureManager->drawFrame(m_textureID,this->m_position.x,this->m_position.y,m_width,m_height,m_currentRow,m_currentFrame,renderer,SDL_FLIP_HORIZONTAL,renderOffset);
     }
 
     SDL_SetRenderDrawColor(renderer, 15, 255, 15, SDL_ALPHA_OPAQUE);

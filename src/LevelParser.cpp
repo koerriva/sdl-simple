@@ -161,6 +161,7 @@ void LevelParser::parseObjectLayer(XMLElement* root,std::vector<Layer*>* layers)
         int numFrames=0,width=0,height=0,callbackID=0,animSpeed=10;
         std::string textureID="default_object";
         SDL_Rect collision;
+        int spriteOffsetX=0,spriteOffsetY=0;
 
         auto properties = e->FirstChildElement("properties");
         if(properties){
@@ -199,11 +200,18 @@ void LevelParser::parseObjectLayer(XMLElement* root,std::vector<Layer*>* layers)
                 if(name=="collisionHeight"){
                     collision.h = p->IntAttribute("value");
                 }
+                if(name=="spriteOffsetX"){
+                    spriteOffsetX = p->IntAttribute("value");
+                    printf("offset x : %d\n",spriteOffsetX);
+                }
+                if(name=="spriteOffsetY"){
+                    spriteOffsetY = p->IntAttribute("value");
+                }
             }
 
         }
 
-        gameObject->load(new LoaderParams(x,y,width,height,textureID,numFrames,animSpeed,callbackID,collision));
+        gameObject->load(new LoaderParams(x,y,width,height,textureID,numFrames,animSpeed,callbackID,collision,spriteOffsetX,spriteOffsetY));
         objectLayer->getGameObjects()->push_back(gameObject);
 
         if(type=="Player"){
