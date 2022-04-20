@@ -119,7 +119,7 @@ void LevelParser::parseTileLayer(XMLElement* root,std::vector<Layer*>* layers,co
     std::string encodeData = dataNode->FirstChild()->Value();
     encodeData = trim(encodeData);
 
-    std::cout << "size : " << encodeData.size() << "," << encodeData << std::endl;
+    std::cout << "size : " << encodeData.size() << std::endl;
     
     size_t outlen = 0;
     decodedIDs = base64.decode(encodeData,&outlen);

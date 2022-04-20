@@ -7,6 +7,7 @@
 #include "StateParser.h"
 #include "LevelParser.h"
 #include "ObjectLayer.h"
+#include "SoundManager.h"
 #include <iostream>
 
 const std::string PlayState::s_playID = "PLAY";
@@ -58,6 +59,9 @@ bool PlayState::onEnter(){
 
     LevelParser levelParser;
     m_currentLevel = levelParser.parseLevel("terrain.tmx");
+
+    SoundManager::Instance()->load("data/bg.ogg","bg_music",SOUND_MUSIC);
+    SoundManager::Instance()->playMusic("bg_music",1);
 
     return true;
 }
