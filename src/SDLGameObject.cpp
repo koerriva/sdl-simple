@@ -1,11 +1,11 @@
 #include "SDLGameObject.h"
 #include "Game.h"
 
-SDLGameObject::SDLGameObject():GameObject(){
+ShooterObject::ShooterObject():GameObject(){
 
 }
 
-void SDLGameObject::load(const LoaderParams* params){
+void ShooterObject::load(std::unique_ptr<LoaderParams> const& params){
     this->m_position = ivec2(params->getX(),params->getY());
     this->m_velocity = ivec2(0,0);
 
@@ -19,21 +19,32 @@ void SDLGameObject::load(const LoaderParams* params){
 
     this->m_numFrames = params->getNumFrames();
 
-    this->m_collisionRect = params->getCollision();
+    this->m_collision = params->getCollision();
 }
 
-void SDLGameObject::draw(){
-    TextureManager::Instance()->drawFrame(m_textureID,this->m_position.x,this->m_position.y,m_width,m_height,m_currentRow,m_currentFrame,Game::Instance()->getRenderer());
+void ShooterObject::draw(){
+    TextureManager::Instance()->drawFrame(m_textureID,this->m_position.x,this->m_position.y,m_width,m_height,m_currentRow,m_currentFrame,Game::Instance()->getRenderer(),m_angle,m_alpha,SDL_FLIP_NONE);
 }
 
-void SDLGameObject::update(){
+void ShooterObject::update(){
     m_position += m_velocity;
     m_velocity += m_acceleration;
-
-    m_collisionRect.x += m_velocity.x;
-    m_collisionRect.y += m_velocity.y;
 }
 
-void SDLGameObject::clean(){
+void ShooterObject::clean() {
 
+}
+
+void ShooterObject::collision() {
+
+}
+
+void ShooterObject::doDyingAnimation(){
+    m_currentFrame = int((SDL_GetTicks()/100)%m_numFrames);
+
+    if(m_dyingCounter == m_dyingTime){
+        m_dead = true;
+    }
+
+    m_dyingCounter++;
 }

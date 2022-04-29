@@ -24,7 +24,9 @@ public:
 
     void draw(std::string id,int x,int y,int width,int height,SDL_Renderer* renderer,SDL_RendererFlip flip = SDL_FLIP_NONE,RenderOffset renderOffset={0});
 
-    void drawFrame(std::string id,int x,int y,int width,int height,int currentRow,int currentFrame,SDL_Renderer* renderer,SDL_RendererFlip flip = SDL_FLIP_NONE,RenderOffset renderOffset={0});
+    void drawFrame(std::string id,int x,int y,int width,int height,int currentRow,int currentFrame,SDL_Renderer* renderer,int angle,int alpha,SDL_RendererFlip flip = SDL_FLIP_NONE);
+
+    void drawFrame(std::string id,int x,int y,int width,int height,int currentRow,int currentFrame,SDL_Renderer* renderer,int angle,int alpha,RenderOffset renderOffset={0},SDL_RendererFlip flip = SDL_FLIP_NONE);
 
     void drawTile(std::string id,int margin,int spacing,int x,int y,int width,int height,int currentRow,int currentColumn,SDL_Renderer* renderer);
 

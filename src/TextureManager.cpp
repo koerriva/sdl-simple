@@ -32,7 +32,20 @@ void TextureManager::draw(std::string id,int x,int y,int width,int height,SDL_Re
     SDL_RenderCopyEx(renderer,m_TextureMap[id],&source,&dist,0,0,flip);
 }
 
-void TextureManager::drawFrame(std::string id,int x,int y,int width,int height,int currentRow,int currentFrame,SDL_Renderer* renderer,SDL_RendererFlip flip,RenderOffset renderOffset){
+void TextureManager::drawFrame(std::string id,int x,int y,int width,int height,int currentRow,int currentFrame,SDL_Renderer* renderer,int angle,int alpha,SDL_RendererFlip flip){
+    SDL_Rect source,dist;
+    source.x = width * currentFrame;
+    source.y = height * (currentRow-1);
+    source.w = dist.w = width;
+    source.h = dist.h = height;
+    dist.x = x;
+    dist.y = y;
+
+    SDL_SetTextureAlphaMod(m_TextureMap[id],alpha);
+    SDL_RenderCopyEx(renderer,m_TextureMap[id],&source,&dist,angle,0,flip);
+}
+
+void TextureManager::drawFrame(std::string id,int x,int y,int width,int height,int currentRow,int currentFrame,SDL_Renderer* renderer,int angle,int alpha,RenderOffset renderOffset,SDL_RendererFlip flip){
     SDL_Rect source,dist;
     source.x = width * currentFrame;
     source.y = height * (currentRow-1);
@@ -41,7 +54,8 @@ void TextureManager::drawFrame(std::string id,int x,int y,int width,int height,i
     dist.x = x - renderOffset.spriteOffsetX;
     dist.y = y - renderOffset.spriteOffsetY;
 
-    SDL_RenderCopyEx(renderer,m_TextureMap[id],&source,&dist,0,0,flip);
+    SDL_SetTextureAlphaMod(m_TextureMap[id],alpha);
+    SDL_RenderCopyEx(renderer,m_TextureMap[id],&source,&dist,angle,0,flip);
 }
 
 void TextureManager::drawTile(std::string id,int margin,int spacing,int x,int y,int width,int height,int currentRow,int currentColumn,SDL_Renderer* renderer){

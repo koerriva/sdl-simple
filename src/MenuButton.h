@@ -3,7 +3,7 @@
 #include "SDLGameObject.h"
 #include "GameObjectFactory.h"
 
-class MenuButton : public SDLGameObject
+class MenuButton : public ShooterObject
 {
 private:
     enum button_state {
@@ -23,7 +23,7 @@ public:
     virtual void update();
     virtual void clean();
 
-    virtual void load(const LoaderParams* params);
+    virtual void load(std::unique_ptr<LoaderParams> const& params);
 
     void setCallback(void (*m_callback)());
 

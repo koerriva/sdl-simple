@@ -3,7 +3,7 @@
 #include "SDLGameObject.h"
 #include "GameObjectFactory.h"
 
-class Player : public SDLGameObject
+class Player : public ShooterObject
 {
 public:
     Player();
@@ -11,7 +11,9 @@ public:
     virtual void update();
     virtual void clean();
 
-    virtual void load(const LoaderParams* params);
+    virtual void load(std::unique_ptr<LoaderParams> const& params);
+
+    virtual std::string type() { return "Player"; }
 
 private:
     enum PlayerFace {
@@ -21,7 +23,13 @@ private:
 
     RenderOffset renderOffset = {0};
 
+    void ressurect();
     void handleInput();
+    void handleAnimation();
+
+    int m_invulnerable;
+    int m_invulnerableTime;
+    int m_invulnerableCounter;
 };
 
 class PlayerCreator : public BaseCreator {

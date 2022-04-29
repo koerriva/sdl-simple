@@ -35,7 +35,7 @@ void PlayState::update(){
         bool hit = false;
         for (auto enemy : objectLayer->getEnemies())
         {
-            hit = checkCollision(player->getCollisionRect(),enemy->getCollisionRect());
+            hit = checkCollision(player->getCollision(),enemy->getCollision());
             if(hit){
                 break;
             }

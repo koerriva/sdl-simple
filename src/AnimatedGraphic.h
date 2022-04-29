@@ -3,7 +3,7 @@
 #include "SDLGameObject.h"
 #include "GameObjectFactory.h"
 
-class AnimatedGraphic : public SDLGameObject
+class AnimatedGraphic : public ShooterObject
 {
 public:
     AnimatedGraphic();
@@ -11,7 +11,7 @@ public:
     virtual void draw();
     virtual void clean();
 
-    virtual void load(const LoaderParams* params);
+    virtual void load(std::unique_ptr<LoaderParams> const& params);
 
 private:
     int m_animSpeed = 10;

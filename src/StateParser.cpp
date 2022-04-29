@@ -65,7 +65,7 @@ void StateParser::parseObjects(XMLElement* childRoot,std::vector<GameObject*> *o
 
         GameObject* object = GameObjectFactory::Instance()->create(type);
         LoaderParams* params = new LoaderParams(x,y,width,height,textureID,numFrames,animtedSpeed,callbackID);
-        object->load(params);
+        object->load(std::unique_ptr<LoaderParams>(params));
 
         objects->push_back(object);
     }

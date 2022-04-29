@@ -5,29 +5,30 @@
 
 using namespace glm;
 
-class SDLGameObject : public GameObject
+class ShooterObject : public GameObject
 {
 protected:
-    ivec2 m_position{0,0};
-    ivec2 m_velocity{0,0};
-    ivec2 m_acceleration{0,0};
+    ShooterObject();
 
-    int m_width = 0,m_height = 0;
-    int m_currentFrame = 1,m_currentRow=1;
-    int m_numFrames = 1;
+    //animation
+    void doDyingAnimation();
 
-    SDL_Rect m_collisionRect;
+    
+    int m_bulletFiringSpeed = 0;
+    int m_bulletCounter = 0;
+    int m_moveSpeed = 0;
 
-    std::string m_textureID;
+    int m_dyingTime = 0;
+    int m_dyingCounter = 0;
+
+    bool m_playedDeathSound = false;
 public:
-    SDLGameObject();
+    virtual ~ShooterObject(){};
+
+    virtual void load(std::unique_ptr<LoaderParams> const& params);
     virtual void draw();
     virtual void update();
     virtual void clean();
- 
-    virtual void load(const LoaderParams* params);
-
-    ivec2 getPosition() const {return m_position;}
-    ivec2 getSize() const {return ivec2{m_width,m_height};}
-    SDL_Rect* getCollisionRect() {return &m_collisionRect;}
+    virtual void collision();
+    virtual std::string type() { return "SDLGameObject"; }
 };

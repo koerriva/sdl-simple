@@ -1,18 +1,18 @@
 #include "MenuButton.h"
 #include "InputHandler.h"
 
-MenuButton::MenuButton():SDLGameObject(){
+MenuButton::MenuButton():ShooterObject(){
 }
 
-void MenuButton::load(const LoaderParams* params) {
-    SDLGameObject::load(params);
+void MenuButton::load(std::unique_ptr<LoaderParams> const& params) {
+    ShooterObject::load(params);
     
     m_callbackID = params->getCallbackID();
     m_currentFrame = MOUSE_OUT;
 }
 
 void MenuButton::draw(){
-    SDLGameObject::draw();
+    ShooterObject::draw();
 }
 
 void MenuButton::update(){
@@ -34,7 +34,7 @@ void MenuButton::update(){
 }
 
 void MenuButton::clean(){
-    SDLGameObject::clean();
+    ShooterObject::clean();
 }
 
 void MenuButton::setCallback(void(*callback)()){

@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "GameStateMachine.h"
+#include "BetweenLevelState.h"
 
 #include <vector>
 
@@ -25,6 +26,10 @@ private:
     GameStateMachine* m_GameStateMachine;
 
     int m_width,m_height;
+
+    int m_playerLives = 5;
+    bool m_levelComplete = false;
+    int m_currentLevel = 1;
 public:
     
     ~Game(){};
@@ -57,4 +62,18 @@ public:
 
     int getGameWidth() const { return m_width; }
     int getGameHeight() const { return m_height; }
+
+    int getPlayerLives() const { return m_playerLives; }
+    void setPlayerLives(int lives) {
+        m_playerLives = lives;
+    }
+
+    bool getLevelComplete() const { return m_levelComplete; }
+
+    int getCurrentLevel() const { return m_currentLevel; }
+    void setCurrentLevel(int level) {
+        m_currentLevel = level;
+        m_GameStateMachine->changeState(new BetweenLevelState());
+        m_levelComplete = false;
+    }
 };

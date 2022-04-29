@@ -3,16 +3,23 @@
 #include "SDLGameObject.h"
 #include "GameObjectFactory.h"
 
-class Enemy : public SDLGameObject
+class Enemy : public ShooterObject
 {
 public:
-    Enemy();
     virtual void draw();
     virtual void update();
     virtual void clean();
 
-    virtual void load(const LoaderParams* params);
+    virtual void load(std::unique_ptr<LoaderParams> const& params);
+    virtual std::string type() { return "Enemy"; }
 
+protected:
+    int m_health;
+
+    Enemy();
+    virtual ~Enemy(){}
+
+    friend class EnemyCreator;
 private:
     enum EnemyFace {
         LEFT,RIGHT

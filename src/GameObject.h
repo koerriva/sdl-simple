@@ -2,6 +2,10 @@
 
 #include <iostream>
 #include <SDL2/SDL.h>
+#include <memory>
+#include <glm/glm.hpp>
+
+using namespace glm;
 
 struct RenderOffset
 {
@@ -58,14 +62,76 @@ class GameObject
 {
 public:
 
+    virtual void load(std::unique_ptr<LoaderParams> const& params) = 0;
     virtual void draw() = 0;
     virtual void update() = 0;
     virtual void clean() = 0;
+    virtual void collision() = 0;
+    virtual std::string type() = 0;
 
-    //load
-    virtual void load(const LoaderParams* params) = 0;
+    //movement
+    ivec2 getPosition() { return m_position; }
+    int getWidth() { return m_width; }
+    int getHeight() { return m_height; }
+
+    //scroll
+    void scroll(int scrollspeed) {
+        m_position.x -= scrollspeed;
+    }
+
+    //play state
+    bool updating() { return m_updating; }
+    bool dead() { return m_dead; }
+    bool dying() { return m_dying; }
+    void setUpdating(bool updating) {
+        m_updating = updating;
+    }
+
+    //physics
+    SDL_Rect* getCollision() {
+        return &m_collision;
+    }
 
 protected:
-    GameObject(){}
+    GameObject():m_position(0,0)
+        ,m_velocity(0,0)
+        ,m_acceleration(0,0)
+        ,m_width(0)
+        ,m_height(0)
+        ,m_currentRow(1)
+        ,m_currentFrame(1)
+        ,m_updating(false)
+        ,m_dead(false)
+        ,m_dying(false)
+        ,m_angle(0)
+        ,m_alpha(255)
+        , m_collision({0})
+        {}
     virtual ~GameObject(){}
+
+    //movement
+    ivec2 m_position = {0,0};
+    ivec2 m_velocity = {0,0};
+    ivec2 m_acceleration = {0,0};
+
+    //size
+    int m_width = 0,m_height = 0;
+    
+    //animation
+    int m_currentFrame = 1,m_currentRow=1;
+    int m_numFrames = 1;
+    std::string m_textureID;
+
+    //physics
+    SDL_Rect m_collision;
+
+    //common state
+    bool  m_updating = false;
+    bool m_dead = false;
+    bool m_dying = false;
+
+    //rotation
+    int m_angle = 0;
+    //blending
+    int m_alpha = 255;
 };

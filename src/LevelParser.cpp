@@ -7,6 +7,7 @@
 #include "ObjectLayer.h"
 
 #include <iostream>
+#include <memory>
 
 Level* LevelParser::parseLevel(const char* levelFile){
     //load xml
@@ -211,7 +212,10 @@ void LevelParser::parseObjectLayer(XMLElement* root,std::vector<Layer*>* layers)
 
         }
 
-        gameObject->load(new LoaderParams(x,y,width,height,textureID,numFrames,animSpeed,callbackID,collision,spriteOffsetX,spriteOffsetY));
+        auto ptr = new LoaderParams(x,y,width,height,textureID,numFrames,animSpeed,callbackID,collision,spriteOffsetX,spriteOffsetY);
+        auto loaderParams = std::unique_ptr<LoaderParams>(ptr);
+
+        gameObject->load(loaderParams);
         objectLayer->getGameObjects()->push_back(gameObject);
 
         if(type=="Player"){
